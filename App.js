@@ -1,19 +1,22 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { StatusBar, Platform } from 'react-native'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+import { StateProvider } from './context'
+import TransactionScreen from './Screens/TransactionScreen'
+
+
+// Polyfill to make Android locale string work.
+if (Platform.OS === 'android') {
+  require('intl')
+  require('intl/locale-data/jsonp/en-US')
+  require('intl/locale-data/jsonp/uk-UA')
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => (
+  <StateProvider>
+    {Platform.OS === 'ios' && <StatusBar barStyle="light-content" />}
+    <TransactionScreen />
+  </StateProvider>
+)
+
+export default App
